@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dry Fruits Orders</title>
+<style>
+:root{--bg:#f6f3ee;--card:#fffdf9;--ink:#2a2118;--mute:#7a6c5d;--line:#e4dccf;--accent:#7a4b1e;--accent-ink:#fff;--ok:#2e7d4f;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1611;--card:#262019;--ink:#f1e8da;--mute:#a89a88;--line:#3a3128;--accent:#d9a066;--accent-ink:#1b1611;--ok:#6fcf97;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1611;--card:#262019;--ink:#f1e8da;--mute:#a89a88;--line:#3a3128;--accent:#d9a066;--accent-ink:#1b1611;--ok:#6fcf97;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;padding-bottom:110px}
+.wrap{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:26px;margin:8px 0 2px}
+.sub{color:var(--mute);font-family:system-ui,sans-serif;font-size:14px;margin:0 0 16px}
+.item{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
+.name{font-size:17px;line-height:1.2}
+.price{font-family:system-ui,sans-serif;font-size:13px;color:var(--mute);margin-top:3px}
+.ctl{display:flex;align-items:center;gap:6px;font-family:system-ui,sans-serif}
+.ctl button{width:42px;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font-size:22px;cursor:pointer}
+.ctl button:active{background:var(--accent);color:var(--accent-ink)}
+.qty{min-width:58px;text-align:center;font-size:15px;font-weight:600}
+.pin{width:90px;height:40px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:16px;padding:0 8px}
+.cust{display:grid;gap:8px;margin:18px 0 8px}
+.cust input{height:46px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font-size:16px;padding:0 12px;font-family:system-ui,sans-serif}
+.link{background:none;border:none;color:var(--accent);font-size:14px;text-decoration:underline;cursor:pointer;padding:6px 0;font-family:system-ui,sans-serif}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+.bar>div{max-width:560px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tot{font-size:13px;color:var(--mute);font-family:system-ui,sans-serif}
+.tot b{display:block;font-size:24px;color:var(--ink);font-family:Georgia,serif}
+.send{flex:1;max-width:240px;height:50px;border:none;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-size:17px;font-weight:600;cursor:pointer;font-family:system-ui,sans-serif}
+.send:disabled{opacity:.4}
+.msg{color:var(--ok);font-family:system-ui,sans-serif;font-size:14px;min-height:20px}
+.erow{display:grid;grid-template-columns:1.6fr 1fr auto;gap:6px}
+.erow input{height:42px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-size:16px;padding:0 8px;min-width:0}
+.erow .pin{width:100%}
+.nlab{font-family:system-ui,sans-serif;font-size:14px;color:var(--mute);margin:14px 0 6px}
+.nrow{display:grid;grid-template-columns:1fr 1.4fr auto;gap:6px;margin-bottom:6px;align-items:center}
+.nrow input{height:42px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font-size:16px;padding:0 8px;min-width:0}
+.pick{position:fixed;left:0;right:0;bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:0 16px;z-index:5}
+.pick>div{max-width:560px;margin:0 auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;display:grid;gap:8px;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.pick a.wa{display:flex;align-items:center;justify-content:center;height:46px;border:1px solid var(--accent);border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:16px;text-decoration:none;font-family:system-ui,sans-serif}
+.pick button{height:46px;border:1px solid var(--accent);border-radius:10px;background:var(--bg);color:var(--ink);font-size:16px;cursor:pointer;font-family:system-ui,sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dry Fruits Orders</h1>
+  <p class="sub">Tap + to add. Each tap is 250 g. Prices are per kg.</p>
+  <div id="list"></div>
+  <div class="cust">
+    <input id="cname" placeholder="Customer name" autocomplete="off">
+    <input id="cphone" placeholder="Customer phone (optional)" inputmode="tel" autocomplete="off">
+  </div>
+  <div id="numbox"></div>
+  <button class="link" id="edit">Edit items, prices and numbers</button>
+  <div class="msg" id="msg"></div>
+</div>
+<div class="pick" id="pick" hidden></div>
+<div class="bar"><div>
+  <div class="tot">Total<b id="total">₹0</b></div>
+  <button class="send" id="send" disabled>Send order on WhatsApp</button>
+</div></div>
+<script>
+var nums = [{l:"DCBM",n:"919469125259"}];
+var STEP = 0.25;
+var items = [
+ {n:"Walnut k - California",p:1000},{n:"Walnut k - Kashmir",p:1001},{n:"Walnut k - China",p:1002},
+ {n:"Walnut A - paper",p:1003},{n:"Walnut A - hard",p:1004},{n:"Pistachios",p:1005},
+ {n:"Cashews",p:1006},{n:"Raisins",p:1007},{n:"Almonds",p:1008},{n:"Figs",p:1009}
+];
+var qty = items.map(function(){return 0});
+var editing = false;
+try { var s = JSON.parse(localStorage.getItem("dfPrices")||"null"); if (s && s.length===items.length) items.forEach(function(it,i){ if (+s[i]>0) it.p = +s[i]; }); } catch(e){}
+try { var si = JSON.parse(localStorage.getItem("dfItems")||"null"); if (si && si.length) { items = si; qty = items.map(function(){return 0}); } } catch(e){}
+try { var sn = JSON.parse(localStorage.getItem("dfNums")||"null"); if (sn && sn.length) nums = sn; } catch(e){}
+function fmt(q){ return q<1 ? (q*1000)+" g" : (q%1===0 ? q+" kg" : q+" kg"); }
+function render(){
+  var h = "";
+  items.forEach(function(it,i){
+    if (editing) { h += '<div class="item erow"><input class="inm" placeholder="Item name" value="'+esc(it.n)+'" data-i="'+i+'"><input class="pin" type="number" inputmode="numeric" value="'+it.p+'" data-i="'+i+'"><button class="link" data-rmi="'+i+'">Remove</button></div>'; return; }
+    h += '<div class="item"><div><div class="name">'+it.n+'</div><div class="price">₹'+it.p+' per kg</div></div>';
+    if (editing) h += '<input class="pin" type="number" inputmode="numeric" value="'+it.p+'" data-i="'+i+'">';
+    else h += '<div class="ctl"><button data-d="-1" data-i="'+i+'" aria-label="Remove">−</button><span class="qty">'+(qty[i]?fmt(qty[i]):"0")+'</span><button data-d="1" data-i="'+i+'" aria-label="Add">+</button></div>';
+    h += '</div>';
+  });
+  if (editing) h += '<button class="link" id="addi">+ Add item</button>';
+  document.getElementById("list").innerHTML = h;
+  var nb = "";
+  if (editing) {
+    nb = '<div class="nlab">WhatsApp numbers (order goes to each one)</div>';
+    nums.forEach(function(x,i){ nb += '<div class="nrow"><input class="nl" placeholder="Name" value="'+esc(x.l)+'" data-i="'+i+'"><input class="nn" inputmode="tel" placeholder="Number" value="'+esc(x.n)+'" data-i="'+i+'"><button class="link" data-rm="'+i+'">Remove</button></div>'; });
+    nb += '<button class="link" id="addn">+ Add number</button>';
+  }
+  document.getElementById("numbox").innerHTML = nb;
+  total();
+}
+function total(){
+  var t = 0; items.forEach(function(it,i){ t += qty[i]*it.p; });
+  document.getElementById("total").textContent = "₹"+Math.round(t);
+  document.getElementById("send").disabled = t<=0;
+  return Math.round(t);
+}
+document.getElementById("list").addEventListener("click",function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  if (b.id==="addi") { items.push({n:"",p:0}); qty.push(0); render(); return; }
+  if (b.dataset.rmi!==undefined) { items.splice(+b.dataset.rmi,1); qty.splice(+b.dataset.rmi,1); render(); return; }
+  var i = +b.dataset.i, d = +b.dataset.d;
+  qty[i] = Math.max(0, Math.round((qty[i]+d*STEP)*100)/100);
+  render();
+});
+document.getElementById("list").addEventListener("input",function(e){
+  if (e.target.classList.contains("inm")) items[+e.target.dataset.i].n = e.target.value;
+  if (e.target.classList.contains("pin")) items[+e.target.dataset.i].p = Math.max(0, +e.target.value||0);
+});
+document.getElementById("edit").onclick = function(){
+  editing = !editing;
+  this.textContent = editing ? "Save" : "Edit items, prices and numbers"; document.getElementById("pick").hidden = true;
+  if (!editing) { cleanItems(); try { localStorage.setItem("dfItems", JSON.stringify(items)); } catch(e){} }
+  if (!editing) { cleanNums(); try { localStorage.setItem("dfNums", JSON.stringify(nums)); } catch(e){} }
+  if (!editing) { try { localStorage.setItem("dfPrices", JSON.stringify(items.map(function(x){return x.p}))); } catch(e){} }
+  render();
+};
+document.getElementById("send").onclick = function(){
+  var name = document.getElementById("cname").value.trim();
+  var ph = document.getElementById("cphone").value.trim();
+  var lines = ["*New order*"];
+  if (name) lines.push("Customer: "+name);
+  if (ph) lines.push("Phone: "+ph);
+  lines.push("");
+  items.forEach(function(it,i){ if(qty[i]>0) lines.push(it.n+": "+fmt(qty[i])+" x ₹"+it.p+"/kg = ₹"+Math.round(qty[i]*it.p)); });
+  lines.push("", "*Total: ₹"+total()+"*");
+  msgText = lines.join("\n");
+  if (!nums.length) { document.getElementById("msg").textContent = "Add a WhatsApp number first (Edit items, prices and numbers)."; return; }
+  var pk = document.getElementById("pick");
+  pk.innerHTML = '<div>' + nums.map(function(x,i){ return '<a class="wa" target="_blank" rel="noopener" href="https://wa.me/'+x.n+'?text='+encodeURIComponent(msgText)+'">Send to '+esc(x.l||x.n)+'</a>'; }).join("") + '<button id="copyb">Copy order text</button></div>';
+  pk.hidden = false;
+};
+var msgText = "";
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+function cleanItems(){ items = items.filter(function(x){ return String(x.n).trim(); }).map(function(x){ return {n:String(x.n).trim(), p:Math.max(0,+x.p||0)}; }); qty = items.map(function(){return 0}); }
+function cleanNums(){
+  nums = nums.map(function(x){ var d = String(x.n).replace(/\D/g,""); if (d.length===10) d = "91"+d; return {l:(x.l||"").trim(), n:d}; }).filter(function(x){ return x.n.length>=11; });
+}
+function copyText(){ var ta=document.createElement("textarea"); ta.value=msgText; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.focus(); ta.select(); try{ ta.setSelectionRange(0,99999); document.execCommand("copy"); }catch(e){} document.body.removeChild(ta); var cb=document.getElementById("copyb"); if(cb) cb.textContent="Copied. Paste it in WhatsApp"; }
+function openWA(i){
+  var url = "https://wa.me/"+nums[i].n+"?text="+encodeURIComponent(msgText);
+  var w = null; try { w = window.open(url,"_blank"); } catch(e){}
+  if (!w) window.location.href = url;
+}
+document.getElementById("pick").addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; copyText(); return; if (b.textContent.charAt(0)!=="✓") b.textContent = "✓ " + b.textContent; });
+document.getElementById("numbox").addEventListener("input",function(e){ var i=+e.target.dataset.i; if(e.target.classList.contains("nl")) nums[i].l=e.target.value; if(e.target.classList.contains("nn")) nums[i].n=e.target.value; });
+document.getElementById("numbox").addEventListener("click",function(e){ var b=e.target.closest("button"); if(!b) return; if(b.id==="addn") nums.push({l:"",n:""}); else if(b.dataset.rm!==undefined) nums.splice(+b.dataset.rm,1); else return; render(); });
+render();
+</script>
+</body>
+</html>
